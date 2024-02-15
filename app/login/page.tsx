@@ -1,9 +1,24 @@
-import Link from 'next/link';
-import { Form } from 'app/form';
-import { signIn } from 'app/auth';
-import { SubmitButton } from 'app/submit-button';
+"use client";
+import Link from "next/link";
+import { Form } from "app/form";
+import { SubmitButton } from "app/submit-button";
+import useServerAction from "./requestlogin";
+import { useState } from "react";
 
 export default function Login() {
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  const handlelogin = async (formData: FormData) => {
+    try {
+      await useServerAction(formData);
+    } catch (error) {
+      if (error === "PasswordError") {
+        setErrorMessage("Incorrect password. Please try again.");
+      } else {
+        setErrorMessage("An error occurred. Please try again later.");
+      }
+    }
+  };
   return (
     <div className="flex h-screen w-screen items-center justify-center bg-gray-50">
       <div className="z-10 w-full max-w-md overflow-hidden rounded-2xl border border-gray-100 shadow-xl">
@@ -13,23 +28,17 @@ export default function Login() {
             Use your email and password to sign in
           </p>
         </div>
-        <Form
-          action={async (formData: FormData) => {
-            'use server';
-            await signIn('credentials', {
-              redirectTo: '/protected',
-              email: formData.get('email') as string,
-              password: formData.get('password') as string,
-            });
-          }}
-        >
+        <Form action={handlelogin}>
           <SubmitButton>Sign in</SubmitButton>
+          {errorMessage && (
+            <p className="text-center text-sm text-red-500">{errorMessage}</p>
+          )}
           <p className="text-center text-sm text-gray-600">
             {"Don't have an account? "}
             <Link href="/register" className="font-semibold text-gray-800">
               Sign up
             </Link>
-            {' for free.'}
+            {" for free."}
           </p>
         </Form>
       </div>
