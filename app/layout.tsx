@@ -1,3 +1,4 @@
+import Navbarr from "./components/navbar/Navbar";
 import "./globals.css";
 
 import { GeistSans } from "geist/font/sans";
@@ -23,7 +24,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={GeistSans.variable}>{children}</body>
+      <body className={GeistSans.variable}>
+        <div className="flex flex-col space-y-20 bg-black">
+          <div>
+            <Navbarr />
+          </div>
+          <div>{children}</div>
+        </div>
+      </body>
     </html>
   );
 }

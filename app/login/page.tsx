@@ -4,6 +4,8 @@ import { Form } from "app/form";
 import { SubmitButton } from "app/submit-button";
 import useServerAction from "./requestlogin";
 import { useState } from "react";
+import { faUser } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default function Login() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -20,27 +22,44 @@ export default function Login() {
     }
   };
   return (
-    <div className="flex h-screen w-screen items-center justify-center bg-gray-50">
-      <div className="z-10 w-full max-w-md overflow-hidden rounded-2xl border border-gray-100 shadow-xl">
-        <div className="flex flex-col items-center justify-center space-y-3 border-b border-gray-200 bg-white px-4 py-6 pt-8 text-center sm:px-16">
-          <h3 className="text-xl font-semibold">Sign In</h3>
+    <div className="flex h-screen w-screen items-center justify-center bg-secondary">
+      <div className="z-10 w-full max-w-md -mt-80 overflow-hidden rounded-2xl border border-purple shadow-xl h-[80%] mx-[5%] md:mx-auto bg-purple">
+        <div className="flex flex-col items-center justify-center space-y-2 border-b border-purple bg-purple px-4 py-6 pt-8 text-center sm:px-16">
+          <div className="space-y-[-40%]">
+            <div>
+              <FontAwesomeIcon
+                icon={faUser}
+                color="#66B6D6"
+                className=" text-2xl"
+              />
+            </div>
+            <div className="">
+              <canvas className="border-b border-primary" />
+            </div>
+          </div>
+          <h3 className="text-xl text-gray-200 font-semibold">Sign In</h3>
           <p className="text-sm text-gray-500">
             Use your email and password to sign in
           </p>
         </div>
-        <Form action={handlelogin}>
-          <SubmitButton>Sign in</SubmitButton>
-          {errorMessage && (
-            <p className="text-center text-sm text-red-500">{errorMessage}</p>
-          )}
-          <p className="text-center text-sm text-gray-600">
-            {"Don't have an account? "}
-            <Link href="/register" className="font-semibold text-gray-800">
-              Sign up
-            </Link>
-            {" for free."}
-          </p>
-        </Form>
+        <div className="">
+          {" "}
+          <Form action={handlelogin}>
+            <div className="mt-8">
+              <SubmitButton>Sign in</SubmitButton>
+            </div>
+            {errorMessage && (
+              <p className="text-center text-sm text-red-500">{errorMessage}</p>
+            )}
+            <p className="text-center text-sm text-gray-400">
+              {"Don't have an account? "}
+              <Link href="/register" className="font-semibold text-white">
+                Sign up
+              </Link>
+              {" for free."}
+            </p>
+          </Form>
+        </div>
       </div>
     </div>
   );
