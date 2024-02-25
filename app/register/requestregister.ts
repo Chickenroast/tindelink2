@@ -1,3 +1,4 @@
+"use server";
 import { redirect } from "next/navigation";
 import { createUser, getUser } from "../data/db";
 

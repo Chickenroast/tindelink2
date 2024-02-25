@@ -1,20 +1,19 @@
-// ProtectedPage.tsx
 import { GetServerSidePropsContext } from "next";
 import { auth, signOut } from "app/auth";
 import Button from "app/protected/button";
 import UpdateProfilePage from "./update/page";
 import { getUser } from "../data/db";
-import SignOut from "./signout"; // Import the SignOut component
 
-interface UserData {
-  id: number;
-  email: string;
-  role: string;
-  location: string;
+export interface UserData {
+  id: string;
+  email: string | null;
+  password: string | null;
+  role: string | null;
+  location: string | null;
 }
 
 interface ProtectedPageProps {
-  userData: UserData | null;
+  userData: UserData;
 }
 
 export default function ProtectedPage({ userData }: ProtectedPageProps) {
@@ -24,12 +23,13 @@ export default function ProtectedPage({ userData }: ProtectedPageProps) {
         {userData ? (
           <>
             <p>You are logged in as {userData.email}</p>
-
+            <SignOut />
             <Button path="/protected/update">Update</Button>
           </>
         ) : (
           <>
             <p>You are not logged in.</p>
+            <SignOut />
           </>
         )}
       </div>
@@ -42,7 +42,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     const session = await auth(context);
     let userData: UserData | null = null;
     if (session?.user) {
-      userData = await getUser(session.user.email!); // Use optional chaining and type assertion
+      userData = await getUser(session.user.email!);
     }
     return {
       props: {
@@ -57,4 +57,12 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       },
     };
   }
+}
+
+function SignOut() {
+  const handleSignOut = async () => {
+    await signOut();
+  };
+
+  return <button onClick={handleSignOut}>Sign out</button>;
 }

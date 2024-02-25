@@ -4,19 +4,19 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 interface UserData {
-  id: number;
+  id: string;
   email: string;
   role: string;
   location: string;
 }
 
 interface UpdateProfilePageProps {
-  userId: number;
+  userId: string;
 }
 
 export default function UpdateProfilePage({ userId }: UpdateProfilePageProps) {
   const [userData, setUserData] = useState<UserData>({
-    id: 0,
+    id: "",
     email: "",
     role: "",
     location: "",
